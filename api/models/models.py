@@ -45,7 +45,8 @@ class LectureModel(BaseModel):
 class QuizModel(BaseModel):
     id: Optional[PyObjectId] = Field(default_factory=PyObjectId, alias="_id")
     lectureId: PyObjectId
-    content: str
+    content: Optional[str] = None
+    fileUrl: Optional[str] = None
     format: str = "json"
     createdAt: datetime = Field(default_factory=datetime.utcnow)
     updatedAt: datetime = Field(default_factory=datetime.utcnow)

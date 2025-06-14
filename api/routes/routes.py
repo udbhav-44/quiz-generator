@@ -27,8 +27,13 @@ async def create_lecture(lecture: LectureRequest):
     Create a new lecture entry with video and transcript URLs
     Returns the ID of the created document
     """
-    lecture_id = await LectureController.create_lecture(lecture.dict())
-    return JSONResponse(content={"id": lecture_id}, status_code=201)
+    try:
+        lecture_id = await LectureController.create_lecture(lecture.dict())
+        return JSONResponse(content={"id": lecture_id}, status_code=201)
+    except HTTPException as e:
+        raise e
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
 
 @router.get("/api/lectures/{lecture_id}")
 async def get_lecture(lecture_id: str):
@@ -49,8 +54,22 @@ async def process_lecture(lecture_id: str, background_tasks: BackgroundTasks):
     Process a lecture to generate quiz
     This runs in the background as it may take some time
     """
-    background_tasks.add_task(LectureController.process_lecture, lecture_id)
-    return JSONResponse(content={"message": f"Processing started for lecture {lecture_id}"})
+    try:
+        # Check if lecture is already completed
+        lecture = await LectureController.get_lecture(lecture_id)
+        if lecture.get("status") == "completed":
+            return JSONResponse(
+                content={"message": f"Lecture {lecture_id} has already been processed and completed"},
+                status_code=200
+            )
+        
+        # If not completed, start the processing
+        background_tasks.add_task(LectureController.process_lecture, lecture_id)
+        return JSONResponse(content={"message": f"Processing started for lecture {lecture_id}"})
+    except HTTPException as e:
+        raise e
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
 
 @router.get("/api/lectures/{lecture_id}/status")
 async def get_lecture_status(lecture_id: str):
@@ -60,19 +79,6 @@ async def get_lecture_status(lecture_id: str):
     try:
         lecture = await LectureController.get_lecture(lecture_id)
         return JSONResponse(content={"status": lecture["status"]})
-    except HTTPException as e:
-        raise e
-    except Exception as e:
-        raise HTTPException(status_code=500, detail=str(e))
-
-@router.get("/api/quiz/{quiz_id}")
-async def get_quiz(quiz_id: str):
-    """
-    Get quiz by ID
-    """
-    try:
-        quiz = await QuizController.get_quiz(quiz_id)
-        return JSONResponse(content=parse_json(quiz))
     except HTTPException as e:
         raise e
     except Exception as e:
@@ -91,15 +97,21 @@ async def get_lecture_quiz(lecture_id: str):
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 
-@router.get("/api/lectures/{lecture_id}/quiz/content")
+
+@router.get("/api/lectures/{lecture_id}/quiz/url")
 async def get_lecture_quiz_content(lecture_id: str):
     """
     Get the raw quiz content associated with a lecture
+    For PDF format, this will return the file URL instead of content
     """
     try:
         quiz = await QuizController.get_quiz_by_lecture(lecture_id)
-        return Response(content=quiz["content"], media_type="text/json")
+        if quiz["format"] == "json":
+            return JSONResponse(content={"fileUrl": quiz["fileUrl"], "format": "json"})
+        else:
+            # Backward compatibility for markdown content
+            return Response(content=quiz["content"], media_type="text/markdown")
     except HTTPException as e:
         raise e
     except Exception as e:
-        raise HTTPException(status_code=500, detail=str(e))
+        raise HTTPException(status_code=500, detail=str(e))     

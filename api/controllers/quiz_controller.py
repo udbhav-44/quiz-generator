@@ -16,13 +16,38 @@ load_dotenv()
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '../..')))
 from script import run_pipeline
 
-# Make sure the GEMINI_API_KEY is correctly set in the environment
-from langchain_openai import ChatOpenAI
 
 
 logger = logging.getLogger(__name__)
 
 class LectureController:
+    
+    @staticmethod
+    async def check_duplicate_lecture(lecture_data):
+        """
+        Check if a lecture with the same details already exists
+        Returns the existing lecture if found, None otherwise
+        """
+        try:
+            collection = Database.db.lectures
+            
+            # Query for lectures with matching core details (excluding timestamps and status)
+            query = {
+                "courseCode": lecture_data["courseCode"],
+                "year": lecture_data["year"],
+                "quarter": lecture_data["quarter"],
+                "videoId": lecture_data["videoId"],
+                "videoUrl": lecture_data["videoUrl"],
+                "transcriptUrl": lecture_data["transcriptUrl"]
+            }
+            
+            existing_lecture = await collection.find_one(query)
+            return existing_lecture
+        except Exception as e:
+            logger.error(f"Error checking for duplicate lecture: {e}")
+            raise HTTPException(status_code=500, detail=f"Failed to check for duplicate lecture: {str(e)}")
+    
+    
     @staticmethod
     async def create_lecture(lecture_data):
         """
@@ -30,18 +55,29 @@ class LectureController:
         Returns the ID of the created document
         """
         try:
+            # Check for duplicate lecture first
+            existing_lecture = await LectureController.check_duplicate_lecture(lecture_data)
+            if existing_lecture:
+                raise HTTPException(
+                    status_code=409, 
+                    detail="A lecture with these details already exists"
+                )
+            
             collection = Database.db.lectures
             # Set timestamps
             lecture_data["createdAt"] = datetime.utcnow()
             lecture_data["updatedAt"] = datetime.utcnow()
-            lecture_data["status"] = "pending"
+            lecture_data["status"] = "not started"
             
             result = await collection.insert_one(lecture_data)
             return str(result.inserted_id)
+        except HTTPException as e:
+            # Re-raise HTTPException (including duplicate check error)
+            raise e
         except Exception as e:
             logger.error(f"Error creating lecture: {e}")
             raise HTTPException(status_code=500, detail=f"Failed to create lecture: {str(e)}")
-    
+        
     @staticmethod
     async def get_lecture(lecture_id):
         """Get a lecture by ID"""
@@ -59,7 +95,7 @@ class LectureController:
     async def process_lecture(lecture_id):
         """
         Process a lecture to generate quiz
-        1. Download video and transcript
+        1. Download transcript
         2. Run pipeline to generate quiz
         3. Save quiz to database
         4. Update lecture status
@@ -78,11 +114,10 @@ class LectureController:
             )
             
             # Import utility function
-            from utils.file_utils import download_file
+            from utils.quiz_utils import download_file
             
             try:
-                # Download video and transcript
-                video_path = await download_file(lecture['videoUrl'], ".mp4")
+                # Download transcript
                 transcript_path = await download_file(lecture['transcriptUrl'], ".txt")
             except HTTPException as e:
                 await collection.update_one(
@@ -93,24 +128,29 @@ class LectureController:
             
             # Set up output path for markdown
             temp_output_json = tempfile.NamedTemporaryFile(delete=False, suffix=".json").name
-            
+            json_output_dir = os.path.join(os.path.dirname(__file__), '..', 'output', 'json')
+            os.makedirs(json_output_dir, exist_ok=True)
             # Run pipeline to generate quiz
             logger.info(f"Running pipeline for lecture {lecture_id}")
-            # Make sure to set the GEMINI_API_KEY environment variable
-            # os.environ["GEMINI_API_KEY"] = os.getenv("GEMINI_API_KEY", "")
-            # os.environ["GEMINI_MODEL"] = os.getenv("GEMINI_MODEL", "gemini-2.0-flash")
-            run_pipeline(transcript_path, video_path, temp_output_md)
+            os.environ["OPENAI_API_KEY"] = os.getenv("OPENAI_API_KEY", "")
+            os.environ["OPENAI_MODEL"] = os.getenv("OPENAI_MODEL", "gpt-4o")
+            run_pipeline(transcript_path, temp_output_json)
             
-            # Read generated markdown file
-            with open(temp_output_md, 'r', encoding='utf-8') as f:
-                quiz_content = f.read()
+            json_file = f"lecture_{lecture_id}_quiz.json"
+            permanent_json_path = os.path.join(json_output_dir, json_file)
+            
+            import shutil
+            # Move temporary JSON file to permanent directory
+            shutil.move(temp_output_json, permanent_json_path)
+            
+            json_file_url = f"/api/output/json/{json_file}"
             
             # Save quiz to database
             quiz_collection = Database.db.quiz
             quiz_data = {
                 "lectureId": ObjectId(lecture_id),
-                "content": quiz_content,
-                "format": "md",
+                "fileUrl": json_file_url,
+                "format": "json",
                 "createdAt": datetime.utcnow(),
                 "updatedAt": datetime.utcnow()
             }
@@ -127,7 +167,6 @@ class LectureController:
             )
             
             # Clean up temporary files
-            os.remove(video_path)
             os.remove(transcript_path)
             os.remove(temp_output_json)
             
@@ -150,18 +189,6 @@ class LectureController:
             raise HTTPException(status_code=500, detail=f"Failed to process lecture: {str(e)}")
 
 class QuizController:
-    @staticmethod
-    async def get_quiz(quiz_id):
-        """Get quiz by ID"""
-        try:
-            collection = Database.db.quiz
-            quiz = await collection.find_one({"_id": ObjectId(quiz_id)})
-            if not quiz:
-                raise HTTPException(status_code=404, detail=f"quiz with ID {quiz_id} not found")
-            return quiz
-        except Exception as e:
-            logger.error(f"Error retrieving quiz: {e}")
-            raise HTTPException(status_code=500, detail=f"Failed to retrieve quiz: {str(e)}")
     
     @staticmethod
     async def get_quiz_by_lecture(lecture_id):

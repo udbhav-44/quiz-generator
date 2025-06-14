@@ -6,7 +6,7 @@ import logging
 from datetime import datetime
 from dotenv import load_dotenv
 
-from routes.lecture_routes import router as lecture_router
+from routes.routes import router as quiz_router
 from config.database import Database
 
 # Load environment variables
@@ -15,6 +15,7 @@ load_dotenv()
 # Configure logging
 logging.basicConfig(level=logging.DEBUG, format="%(asctime)s - %(levelname)s - %(message)s")
 logger = logging.getLogger(__name__)
+logging.getLogger("litellm").disabled = True
 
 # Create FastAPI app with metadata
 app = FastAPI()
@@ -29,7 +30,7 @@ app.add_middleware(
 )
 
 # Include routers
-app.include_router(lecture_router)
+app.include_router(quiz_router)
 
 @app.on_event("startup")
 async def startup_db_client():
