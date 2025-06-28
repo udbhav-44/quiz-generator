@@ -1,0 +1,184 @@
+{
+    "questions": [
+        {
+            "question": "What is a matrix in the context of linear algebra?",
+            "options": [
+                "A single number",
+                "A rectangular array of numbers arranged in rows and columns",
+                "A circular array of numbers",
+                "A triangular array of numbers"
+            ],
+            "correct_option": [
+                "A rectangular array of numbers arranged in rows and columns"
+            ],
+            "correct_option_index": [
+                1
+            ],
+            "explanation": "A matrix is defined as a rectangular array of numbers arranged in rows and columns, which is a fundamental concept in linear algebra.",
+            "bloom_level": "Remember",
+            "time_stamp": "00:00:10"
+        },
+        {
+            "question": "What is the null space of a matrix A?",
+            "options": [
+                "The set of all vectors x such that Ax equals zero",
+                "The set of all vectors x such that Ax equals one",
+                "The set of all vectors x such that Ax equals A",
+                "The set of all vectors x such that Ax equals x"
+            ],
+            "correct_option": [
+                "The set of all vectors x such that Ax equals zero"
+            ],
+            "correct_option_index": [
+                0
+            ],
+            "explanation": "The null space of a matrix A is defined as the set of all vectors x for which the matrix-vector product Ax results in the zero vector.",
+            "bloom_level": "Understand",
+            "time_stamp": "00:00:30"
+        },
+        {
+            "question": "Why can't Singular Value Decomposition (SVD) be used directly for matrix completion when the full matrix is unknown?",
+            "options": [
+                "SVD requires the matrix to be square",
+                "SVD requires orthogonality constraints",
+                "SVD requires the full matrix to be known",
+                "SVD is computationally expensive"
+            ],
+            "correct_option": [
+                "SVD requires the full matrix to be known"
+            ],
+            "correct_option_index": [
+                2
+            ],
+            "explanation": "SVD cannot be used directly for matrix completion when the full matrix is unknown because it requires the full matrix to be known to perform the decomposition.",
+            "bloom_level": "Apply",
+            "time_stamp": "00:00:45"
+        },
+        {
+            "question": "What is the role of the parameter T in the expression X = A + TD?",
+            "options": [
+                "T is a vector that scales the matrix A",
+                "T is a scalar that scales the vector D",
+                "T is a matrix that scales the vector D",
+                "T is a scalar that scales the matrix A"
+            ],
+            "correct_option": [
+                "T is a scalar that scales the vector D"
+            ],
+            "correct_option_index": [
+                1
+            ],
+            "explanation": "In the expression X = A + TD, T is a scalar that scales the vector D, allowing representation of a line in vector space.",
+            "bloom_level": "Apply",
+            "time_stamp": "00:01:00"
+        },
+        {
+            "question": "Why is it important to normalize the vector D in the expression X = A + TD?",
+            "options": [
+                "To ensure D is a zero vector",
+                "To ensure D is a unit vector",
+                "To ensure D is a negative vector",
+                "To ensure D is a positive vector"
+            ],
+            "correct_option": [
+                "To ensure D is a unit vector"
+            ],
+            "correct_option_index": [
+                1
+            ],
+            "explanation": "Normalizing the vector D ensures it is a unit vector, which helps maintain consistent scale when varying the scalar T.",
+            "bloom_level": "Understand",
+            "time_stamp": "00:01:10"
+        },
+        {
+            "question": "What challenge do flat gradients pose in optimization?",
+            "options": [
+                "They make optimization easier",
+                "They make optimization impossible",
+                "They make optimization difficult",
+                "They have no effect on optimization"
+            ],
+            "correct_option": [
+                "They make optimization difficult"
+            ],
+            "correct_option_index": [
+                2
+            ],
+            "explanation": "Flat gradients make optimization difficult because many algorithms rely on slope information to make progress, and flat gradients provide little to no slope information.",
+            "bloom_level": "Analyze",
+            "time_stamp": "00:01:20"
+        },
+        {
+            "question": "What type of optimization techniques does the course focus on?",
+            "options": [
+                "Discrete optimization techniques",
+                "Continuous optimization techniques",
+                "Random optimization techniques",
+                "Hybrid optimization techniques"
+            ],
+            "correct_option": [
+                "Continuous optimization techniques"
+            ],
+            "correct_option_index": [
+                1
+            ],
+            "explanation": "The course focuses on continuous optimization techniques, which are more relevant to machine learning contexts.",
+            "bloom_level": "Understand",
+            "time_stamp": "00:01:30"
+        },
+        {
+            "question": "Why are discrete optimization problems not covered in this course?",
+            "options": [
+                "They are too complex",
+                "They are not commonly used in machine learning contexts",
+                "They are too simple",
+                "They are irrelevant to linear algebra"
+            ],
+            "correct_option": [
+                "They are not commonly used in machine learning contexts"
+            ],
+            "correct_option_index": [
+                1
+            ],
+            "explanation": "Discrete optimization problems are not covered because they are not commonly used in machine learning contexts, which is the focus of the course.",
+            "bloom_level": "Understand",
+            "time_stamp": "00:01:40"
+        },
+        {
+            "question": "What is UV decomposition used for in matrix completion?",
+            "options": [
+                "To impose orthogonality constraints",
+                "To avoid the need for the full matrix",
+                "To increase computational complexity",
+                "To simplify matrix multiplication"
+            ],
+            "correct_option": [
+                "To avoid the need for the full matrix"
+            ],
+            "correct_option_index": [
+                1
+            ],
+            "explanation": "UV decomposition is used in matrix completion to avoid the need for the full matrix, unlike SVD which requires the full matrix.",
+            "bloom_level": "Apply",
+            "time_stamp": "00:00:50"
+        },
+        {
+            "question": "What is the significance of ensuring a vector is a unit vector in optimization problems?",
+            "options": [
+                "It ensures the vector is zero",
+                "It ensures consistent scaling",
+                "It ensures the vector is negative",
+                "It ensures the vector is positive"
+            ],
+            "correct_option": [
+                "It ensures consistent scaling"
+            ],
+            "correct_option_index": [
+                1
+            ],
+            "explanation": "Ensuring a vector is a unit vector is significant because it maintains consistent scaling, which is important in optimization problems.",
+            "bloom_level": "Analyze",
+            "time_stamp": "00:01:10"
+        }
+    ]
+}

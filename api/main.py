@@ -6,8 +6,8 @@ import logging
 from datetime import datetime
 from dotenv import load_dotenv
 
-from routes.routes import router as quiz_router
-from config.database import Database
+from .routes.routes import router as quiz_router
+from .config.database import Database
 
 # Load environment variables
 load_dotenv()
@@ -55,4 +55,4 @@ async def health_check():
 
 if __name__ == "__main__":
     port = int(os.getenv("PORT", 8000))
-    uvicorn.run("server:app", host="0.0.0.0", port=port, reload=True)
+    uvicorn.run("main:app", host="0.0.0.0", port=port, reload=True)

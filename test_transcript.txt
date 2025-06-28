@@ -1,0 +1,23 @@
+Welcome to our lecture on linear algebra and matrix operations.
+
+Today we will be discussing the fundamental concepts of matrices and their applications in machine learning.
+
+Let's start with the basics. A matrix is a rectangular array of numbers arranged in rows and columns. For example, a 2x3 matrix has 2 rows and 3 columns.
+
+The null space of a matrix A is the set of all vectors x such that Ax equals zero. This is a fundamental concept in linear algebra.
+
+When we talk about matrix completion, we often use techniques like Singular Value Decomposition, or SVD. However, SVD cannot be used directly when we don't know the full matrix.
+
+Instead, we use UV decomposition, which does not require orthogonality constraints. This makes the optimization problem easier to solve.
+
+The parameter T in the expression X = A + TD is a scalar that scales the vector D. This allows us to represent a line in vector space.
+
+It's important to normalize the vector D to ensure it is a unit vector. This helps maintain consistent scale when varying T.
+
+Flat gradients can make optimization difficult because many algorithms rely on slope information to make progress.
+
+This course focuses on continuous optimization techniques, which are more relevant to machine learning contexts.
+
+Discrete optimization problems are not covered because they are not commonly used in machine learning contexts.
+
+Thank you for attending this lecture on linear algebra fundamentals. 

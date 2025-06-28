@@ -126,6 +126,7 @@ def generate_questions(transcript):
             "question": "...",
             "options": ["...", "...", "...", "..."],
             "correct_option": "...",
+            "correct_option_index": [0],
             "explanation": "...",
             "time_stamp": "00:12:34"
             },
@@ -203,7 +204,6 @@ if __name__ == "__main__":
     
     pdf_output = run_pipeline(
         transcript_path="Data/Transcript/video.txt",
+        output_path="output/generated_quiz.json"
     )
-    output_file = "output/generated_quiz.json"
-    save_to_json(pdf_output, output_file)
-
+ 

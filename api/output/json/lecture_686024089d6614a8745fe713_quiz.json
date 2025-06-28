@@ -1,0 +1,184 @@
+{
+    "questions": [
+        {
+            "question": "What is the null space of a matrix A?",
+            "options": [
+                "The set of all vectors x such that Ax equals zero",
+                "The set of all vectors x such that Ax equals one",
+                "The set of all vectors x such that Ax equals A",
+                "The set of all vectors x such that Ax equals x"
+            ],
+            "correct_option": [
+                "The set of all vectors x such that Ax equals zero"
+            ],
+            "correct_option_index": [
+                0
+            ],
+            "explanation": "The null space of a matrix A is defined as the set of all vectors x for which the matrix-vector product Ax results in the zero vector.",
+            "bloom_level": "Remember",
+            "time_stamp": "00:00:30"
+        },
+        {
+            "question": "What is the primary difference between SVD and UV decomposition in matrix completion?",
+            "options": [
+                "SVD requires orthogonality constraints, UV decomposition does not",
+                "UV decomposition requires orthogonality constraints, SVD does not",
+                "Both require orthogonality constraints",
+                "Neither requires orthogonality constraints"
+            ],
+            "correct_option": [
+                "SVD requires orthogonality constraints, UV decomposition does not"
+            ],
+            "correct_option_index": [
+                0
+            ],
+            "explanation": "SVD involves orthogonality constraints which are not required in UV decomposition, making the latter easier for optimization when the full matrix is unknown.",
+            "bloom_level": "Understand",
+            "time_stamp": "00:01:00"
+        },
+        {
+            "question": "Why is it important to normalize the vector D in the expression X = A + TD?",
+            "options": [
+                "To ensure D is a unit vector for consistent scaling",
+                "To make D orthogonal to A",
+                "To increase the magnitude of D",
+                "To decrease the magnitude of D"
+            ],
+            "correct_option": [
+                "To ensure D is a unit vector for consistent scaling"
+            ],
+            "correct_option_index": [
+                0
+            ],
+            "explanation": "Normalizing D ensures it is a unit vector, which helps maintain a consistent scale when varying the scalar T.",
+            "bloom_level": "Apply",
+            "time_stamp": "00:01:30"
+        },
+        {
+            "question": "What is the role of the parameter T in the expression X = A + TD?",
+            "options": [
+                "T scales the vector D",
+                "T scales the matrix A",
+                "T is a constant offset",
+                "T is a vector"
+            ],
+            "correct_option": [
+                "T scales the vector D"
+            ],
+            "correct_option_index": [
+                0
+            ],
+            "explanation": "The parameter T is a scalar that scales the vector D, allowing the representation of a line in vector space.",
+            "bloom_level": "Understand",
+            "time_stamp": "00:01:20"
+        },
+        {
+            "question": "Why are flat gradients problematic in optimization?",
+            "options": [
+                "They make it difficult for algorithms to make progress",
+                "They increase the speed of convergence",
+                "They simplify the optimization problem",
+                "They are not relevant to machine learning"
+            ],
+            "correct_option": [
+                "They make it difficult for algorithms to make progress"
+            ],
+            "correct_option_index": [
+                0
+            ],
+            "explanation": "Flat gradients provide little slope information, which many optimization algorithms rely on to make progress.",
+            "bloom_level": "Analyze",
+            "time_stamp": "00:02:00"
+        },
+        {
+            "question": "What type of optimization techniques does this course focus on?",
+            "options": [
+                "Continuous optimization techniques",
+                "Discrete optimization techniques",
+                "Both continuous and discrete optimization techniques",
+                "Neither continuous nor discrete optimization techniques"
+            ],
+            "correct_option": [
+                "Continuous optimization techniques"
+            ],
+            "correct_option_index": [
+                0
+            ],
+            "explanation": "The course focuses on continuous optimization techniques, which are more relevant to machine learning contexts.",
+            "bloom_level": "Remember",
+            "time_stamp": "00:02:30"
+        },
+        {
+            "question": "Why are discrete optimization problems not covered in this course?",
+            "options": [
+                "They are not commonly used in machine learning contexts",
+                "They are too complex",
+                "They are irrelevant to linear algebra",
+                "They are covered in another course"
+            ],
+            "correct_option": [
+                "They are not commonly used in machine learning contexts"
+            ],
+            "correct_option_index": [
+                0
+            ],
+            "explanation": "Discrete optimization problems are not commonly used in machine learning contexts, hence they are not covered in this course.",
+            "bloom_level": "Understand",
+            "time_stamp": "00:02:40"
+        },
+        {
+            "question": "What is a matrix in the context of linear algebra?",
+            "options": [
+                "A rectangular array of numbers arranged in rows and columns",
+                "A square array of numbers",
+                "A single row of numbers",
+                "A single column of numbers"
+            ],
+            "correct_option": [
+                "A rectangular array of numbers arranged in rows and columns"
+            ],
+            "correct_option_index": [
+                0
+            ],
+            "explanation": "A matrix is defined as a rectangular array of numbers arranged in rows and columns, such as a 2x3 matrix with 2 rows and 3 columns.",
+            "bloom_level": "Remember",
+            "time_stamp": "00:00:10"
+        },
+        {
+            "question": "What does the expression X = A + TD represent in vector space?",
+            "options": [
+                "A line",
+                "A plane",
+                "A point",
+                "A hyperplane"
+            ],
+            "correct_option": [
+                "A line"
+            ],
+            "correct_option_index": [
+                0
+            ],
+            "explanation": "The expression X = A + TD represents a line in vector space, where T is a scalar and D is a direction vector.",
+            "bloom_level": "Apply",
+            "time_stamp": "00:01:20"
+        },
+        {
+            "question": "Which technique is used for matrix completion when the full matrix is unknown?",
+            "options": [
+                "UV decomposition",
+                "SVD",
+                "QR decomposition",
+                "LU decomposition"
+            ],
+            "correct_option": [
+                "UV decomposition"
+            ],
+            "correct_option_index": [
+                0
+            ],
+            "explanation": "UV decomposition is used for matrix completion when the full matrix is unknown, as it does not require orthogonality constraints.",
+            "bloom_level": "Apply",
+            "time_stamp": "00:01:00"
+        }
+    ]
+}

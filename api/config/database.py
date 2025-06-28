@@ -2,6 +2,7 @@ from motor.motor_asyncio import AsyncIOMotorClient
 from dotenv import load_dotenv
 import os
 import logging
+from urllib.parse import urlparse
 
 logger = logging.getLogger(__name__)
 
@@ -25,10 +26,11 @@ class Database:
             cls.client = AsyncIOMotorClient(mongodb_uri)
             
             # Extract database name from URI
-            db_name = "mookitTesting"  # Use a fixed database name
+            parsed_uri = urlparse(mongodb_uri)
+            db_name = parsed_uri.path.strip('/') or "quiz_generator"
             cls.db = cls.client[db_name]
             
-            logger.info("Connected to MongoDB successfully")
+            logger.info(f"Connected to MongoDB database: {db_name}")
             return cls.db
         except Exception as e:
             logger.error(f"Failed to connect to MongoDB: {e}")

@@ -1,17 +1,29 @@
 from fastapi import APIRouter, HTTPException, BackgroundTasks
 from fastapi.responses import JSONResponse, Response
 from pydantic import BaseModel
-from bson import ObjectId, json_util
+from bson import ObjectId
 import json
-from controllers.quiz_controller import LectureController, QuizController
-from models.models import LectureModel, QuizModel
+from datetime import datetime
+from ..controllers.quiz_controller import LectureController, QuizController
+from ..models.models import LectureModel, QuizModel
 from typing import Dict, Any
 
 router = APIRouter()
 
 # Helper function to convert MongoDB objects to JSON
 def parse_json(data):
-    return json.loads(json_util.dumps(data))
+    # Convert ObjectId to string for JSON serialization
+    if isinstance(data, dict):
+        for key, value in data.items():
+            if isinstance(value, ObjectId):
+                data[key] = str(value)
+            elif isinstance(value, datetime):
+                data[key] = value.isoformat()
+            elif isinstance(value, dict):
+                data[key] = parse_json(value)
+            elif isinstance(value, list):
+                data[key] = [parse_json(item) if isinstance(item, dict) else str(item) if isinstance(item, ObjectId) else item.isoformat() if isinstance(item, datetime) else item for item in value]
+    return data
 
 class LectureRequest(BaseModel):
     courseCode: str
