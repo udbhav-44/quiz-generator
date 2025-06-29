@@ -22,13 +22,13 @@ def main():
     os.chdir(os.path.dirname(os.path.abspath(__file__)))
     
     with socketserver.TCPServer(("", PORT), MyHTTPRequestHandler) as httpd:
-        print(f"🌐 Serving test files at http://localhost:{PORT}")
-        print(f"📄 Test transcript available at: http://localhost:{PORT}/test_transcript.txt")
+        print(f" Serving test files at http://localhost:{PORT}")
+        print(f" Test transcript available at: http://localhost:{PORT}/test_transcript.txt")
         print("Press Ctrl+C to stop the server")
         try:
             httpd.serve_forever()
         except KeyboardInterrupt:
-            print("\n🛑 Server stopped")
+            print("\n Server stopped")
 
 if __name__ == "__main__":
     main() 

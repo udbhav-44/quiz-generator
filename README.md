@@ -111,12 +111,6 @@ pip install gunicorn
 gunicorn api.main:app -w 4 -k uvicorn.workers.UvicornWorker --bind 0.0.0.0:8000
 ```
 
-##### Method 4: Docker (if available)
-```bash
-# Build and run with Docker
-docker build -t quiz-generator-api .
-docker run -p 8000:8000 --env-file .env quiz-generator-api
-```
 
 2. **Access the API**
    - Base URL: `http://localhost:8000`
